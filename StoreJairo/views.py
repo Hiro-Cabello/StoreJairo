@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
-# ()   { }
+# ()   { }  <!--  -->
 #Recordar que luego de crear la funcion se tiene que asociar con una URL
 #def index(request):
 #    return HttpResponse('Hola Mundo!')
