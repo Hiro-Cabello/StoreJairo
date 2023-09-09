@@ -22,10 +22,13 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('usuarios/login',views.login_views , name='login' ),
     path('', views.index , name='index'),
     path('render/', views.examplerender , name='render'),
     
 ]
+
+
 
 
 
