@@ -16,6 +16,9 @@ from django.contrib.auth import authenticate
 #Ahora vamos a usar esta funcion para poder crear la sesion
 from django.contrib.auth import login
 
+#Para enviar mensajes del servidor al cliente
+from django.contrib import messages
+
 #def index(request):
 #    return HttpResponse('Hola Mundo!')
 
@@ -65,12 +68,18 @@ def login_views(request):#Tiene que recibir la peticion
         if user:
             #vamos a necesitar la peticion y el usuario al cual se le va generar la sesion
             login(request , user)
+            
+            #Enviando mensajes del servidor al cliente
+            messages.success(request , 'Bienvenido {} '.format(user.username))
+            
             print("Usuario autenticado")
             
             #Si en caso nos autenticamos ahora tenemos que redirigirnos a la página de inicio
             return redirect('index')
               
         else:
+            
+            messages.error(request , 'Usuario o contraseña no valido')
             print("Usuario no autenticado")
         
         print('El usuario es {} y el password {} '.format(username,password))
