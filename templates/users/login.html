@@ -14,17 +14,10 @@
          <!-- Primero vamos a validar que los mensajes existan-->
          {% if messages %}
              {% for message in messages %}
-                {% if message.tags == 'success' %} 
-                    <div class="alert alert-success">
-                        {{message}}
-                    </div>
-                {% else %}   
-                    <div class="alert alert-danger">
-                        <button type="button" class="close" data-dismiss="alert" >X</button>
-                        {{message}}
-                    </div>
-                {% endif %}
-
+                <div class="alert {% if message.tags == 'success' %} alert-success {% else %} alert-danger {% endif %}   ">
+                    <button type="button" class="close" data-dismiss="alert" >X</button>
+                    {{message}}
+                </div>
              {% endfor %}
          {% endif %}
 
@@ -37,12 +30,12 @@
                 <form method="post">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label for="username">Username</label>
+                        <label for="username">Usuario</label>
                         <input type="text" name="username" class="form-control">
                     </div>
 
                     <div class="form-group">
-                        <label for="password">Password</label>
+                        <label for="password">Contraseña</label>
                         <input type="password" name="password" class="form-control">
                     </div>
 

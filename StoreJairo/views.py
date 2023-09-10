@@ -16,6 +16,9 @@ from django.contrib.auth import authenticate
 #Ahora vamos a usar esta funcion para poder crear la sesion
 from django.contrib.auth import login
 
+#Ahora vamos a usar esta funcion para poder cerrar la sesion
+from django.contrib.auth import logout
+
 #Para enviar mensajes del servidor al cliente
 from django.contrib import messages
 
@@ -89,6 +92,11 @@ def login_views(request):#Tiene que recibir la peticion
     })
 
 
+# ()   {}  <!--  -->
+def logout_view(request):
+    logout(request)
+    messages.success(request , 'Sesión cerrada exitosamente')
+    return redirect('login')
 
 
 
