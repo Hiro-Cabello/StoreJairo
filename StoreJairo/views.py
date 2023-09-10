@@ -22,6 +22,9 @@ from django.contrib.auth import logout
 #Para enviar mensajes del servidor al cliente
 from django.contrib import messages
 
+
+from .forms import RegisterForm
+
 #def index(request):
 #    return HttpResponse('Hola Mundo!')
 
@@ -99,6 +102,30 @@ def logout_view(request):
     return redirect('login')
 
 
+def register(request):
+    #vamos a crear una instancia de forms
+    #Cuando le pasamos un diccionario estos valores son los que se pintan en el formulario
+    #form=RegisterForm({
+    #    'username' : 'Jairo',
+    #    'email':'jairo@gmail.com'
+    #})
+    form=RegisterForm(
+        request.POST or None
+    )
+    
+    if request.method == 'POST' and form.is_valid():
+        username=form.cleaned_data.get('username')
+        email=form.cleaned_data.get('email')
+        password = form.cleaned_data.get('password')
+        
+        print(username)
+        print(email)
+        print(password)
+        
+    
+    return render(request,'users/register.html',{
+        'form':form
+    })
 
 
 

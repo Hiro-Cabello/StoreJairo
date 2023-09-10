@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('usuarios/login',views.login_views , name='login' ),
     path('usuarios/logout',views.logout_view , name='logout' ),
+    path('usuarios/registro',views.register , name='logout' ),
     path('', views.index , name='index'),
     path('render/', views.examplerender , name='render'),
     
