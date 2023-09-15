@@ -8,8 +8,6 @@ from django.shortcuts import redirect
 #def index(request):
 #    return HttpResponse('Hola Mundo!')
 
-
-
 #Nos permite autenticar a un usuario
 from django.contrib.auth import authenticate
 
@@ -21,6 +19,11 @@ from django.contrib.auth import logout
 
 #Para enviar mensajes del servidor al cliente
 from django.contrib import messages
+
+
+#Con esto vamos a usar el modelo User para crear usuarios
+from django.contrib.auth.models import User
+
 
 
 from .forms import RegisterForm
@@ -94,7 +97,6 @@ def login_views(request):#Tiene que recibir la peticion
         
     })
 
-
 # ()   {}  <!--  -->
 def logout_view(request):
     logout(request)
@@ -104,25 +106,48 @@ def logout_view(request):
 
 def register(request):
     #vamos a crear una instancia de forms
-    #Cuando le pasamos un diccionario estos valores son los que se pintan en el formulario
+    #Cuando le pasamos un diccionario estos valores son 
+    #los que se pintan en el formulario
     #form=RegisterForm({
     #    'username' : 'Jairo',
     #    'email':'jairo@gmail.com'
     #})
+    
+    #Con esto yo le estoy  indicando a django
+    #que si la peticion es por método post entonces se genera un 
+    #Formulario con los datos que el cliente envia
+    #Sino los genera con el campo vacio
     form=RegisterForm(
         request.POST or None
     )
     
+    
+    #is_validad nos permite conocer si el formulario es valido o no
+    #cleaned_data es un diccionario
     if request.method == 'POST' and form.is_valid():
         username=form.cleaned_data.get('username')
         email=form.cleaned_data.get('email')
         password = form.cleaned_data.get('password')
+        
+        
+        #El método create user se encarga de encriptar a la contraseña
+        #Este métodos crea usuarios pero no con permiso de administrador
+        user = User.objects.create_user(username,email,password)
+        
+        if user:
+            #Pero debemos de crear la session
+            login(request,user)
+            messages.success(request , 'Usuario creado exitosamente') 
+            return redirect('index')
+        
         
         print(username)
         print(email)
         print(password)
         
     
+    #Este es el formulario que se muestra ni bien ingreso a la URL
+    #Ya dentro del formulario se va aplicar los metodo arriba codificados
     return render(request,'users/register.html',{
         'form':form
     })
