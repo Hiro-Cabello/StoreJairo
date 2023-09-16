@@ -1,5 +1,7 @@
 from django import forms
 
+from django.contrib.auth.models import User
+
 # ()   {}  <!--  -->
 class RegisterForm(forms.Form):
     
@@ -26,4 +28,20 @@ class RegisterForm(forms.Form):
                              } )) 
     
     
-
+    #vamos a validar ahora los campos
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if User.objects.filter(username=username).exists():
+            #raise - se usa para generar una excepcion intencional
+            #Con esto vamos a mostrar los errores
+            raise forms.ValidationError('El username ya se encuentra en uso')
+            #print('El usuario {} se encuentra duplicado'.format(username))
+        return username
+    
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            #raise - se usa para generar una excepcion intencional
+            raise forms.ValidationError('El email ya se encuentra en uso')
+            #print('El usuario {} se encuentra duplicado'.format(username))
+        return email

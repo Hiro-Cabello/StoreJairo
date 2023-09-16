@@ -124,6 +124,8 @@ def register(request):
     
     #is_validad nos permite conocer si el formulario es valido o no
     #cleaned_data es un diccionario
+    #Recordar que el método clean_username de forms.py se va ejecutar cuando se ejecute el metodo is.valid()
+    #Is_valid también se encarga de validar cada campo de los atributos de forms.py
     if request.method == 'POST' and form.is_valid():
         username=form.cleaned_data.get('username')
         email=form.cleaned_data.get('email')
