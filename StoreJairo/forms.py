@@ -27,6 +27,15 @@ class RegisterForm(forms.Form):
                             'id':'password'
                              } )) 
     
+    password2=forms.CharField(  label='Confirmar password',
+                                required=True,
+                                widget=forms.PasswordInput(attrs={
+                               'class' : 'form-control',
+                               'id':'password2'   
+                              }))
+    
+    
+    
     
     #vamos a validar ahora los campos
     def clean_username(self):
@@ -45,3 +54,24 @@ class RegisterForm(forms.Form):
             raise forms.ValidationError('El email ya se encuentra en uso')
             #print('El usuario {} se encuentra duplicado'.format(username))
         return email
+    
+    #Vamos a sobreescribir el método clean cuando tengamos un campo de dependa de otro
+    def clean(self):
+        cleaned_data = super().clean() # con el metodo clean yo recupero los datos del formulario
+        
+        if cleaned_data.get('password2') != cleaned_data.get('password'):
+            self.add_error('password2' , 'El password no coincide')
+            
+    #Método encargado de persistir al usuario
+    def save(self):
+        return User.objects.create_user(
+            self.cleaned_data.get('username'),
+            self.cleaned_data.get('email'),
+            self.cleaned_data.get('password'),
+        )
+        
+        
+        
+    
+    
+    

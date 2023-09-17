@@ -127,14 +127,16 @@ def register(request):
     #Recordar que el método clean_username de forms.py se va ejecutar cuando se ejecute el metodo is.valid()
     #Is_valid también se encarga de validar cada campo de los atributos de forms.py
     if request.method == 'POST' and form.is_valid():
-        username=form.cleaned_data.get('username')
-        email=form.cleaned_data.get('email')
-        password = form.cleaned_data.get('password')
+        #username=form.cleaned_data.get('username')
+        #email=form.cleaned_data.get('email')
+        #password = form.cleaned_data.get('password')
         
         
         #El método create user se encarga de encriptar a la contraseña
         #Este métodos crea usuarios pero no con permiso de administrador
-        user = User.objects.create_user(username,email,password)
+        #user = User.objects.create_user(username,email,password)
+        user = form.save()
+        
         
         if user:
             #Pero debemos de crear la session
