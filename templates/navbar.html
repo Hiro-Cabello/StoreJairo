@@ -1,0 +1,40 @@
+{% url 'login' as login %} <!-- usuarios/login -->
+<!-- usuarios/register  {% url 'register' as registerr %} -->
+{% url 'register' as registro %}
+
+<nav class="navbar navbar-dark bg-dark navbar-expand-md">
+    <a href="" class="navbar-brand">Hiro Store</a>
+
+    <button type="button" name="button" class="navbar-toggler navbar-toggler-right" data-toggle="collapse" data-target="#navbar" >
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!--Recordar que con el atributo data-toggle y data-target vas a poder contralar el boton hamburgesa -->
+    <div  id="navbar" class="navbar-collapse collapse hide">
+
+        <!-- ya el objeto user se encuentra en la peticion se va usar en los diversos templates , para este caso lo vamos a usar is_authenticated -->
+  
+        <ul class="nav navbar-nav ml-auto">
+
+        {% if user.is_authenticated %}
+            <li class="navbar-item" >
+                <a href="{% url 'logout' %}" class="nav-link"> <span class="fa-solid fa-arrow-right-from-bracket" ></span> Logout</a>
+            </li>
+        {% else %}
+
+
+            <li class="navbar-item {% if request.path == login %} active {% endif %}"  >
+                <a href=" {{login}} " class="nav-link">  <span class="fa-regular fa-user" > </span> Login</a>
+            </li>
+
+            <li class="navbar-item {% if request.path == registro %} active {% endif %} ">
+                <a href="{{registro}}" class="nav-link"> <span class="fa-solid fa-user-plus"></span> Registro</a>
+            </li>
+
+
+        {% endif %}
+
+        </ul>
+    </div>
+
+</nav>

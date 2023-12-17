@@ -38,11 +38,9 @@
                         <li class="list-group-item">
                             {{ product.title }}
             
-                                {% if product.stock %}
-                                <span class="mx-2 text-success"> Disponible </span>  
-                                {% else %}
-                                <span class="mx-2 text-danger"> No Disponible </span>  
-                                {% endif %}
+
+                            <span class="text-success"> ${{ product.price }} </span>  
+
                         </li>
                     {% endfor %}
                 </ul>

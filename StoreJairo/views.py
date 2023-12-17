@@ -20,28 +20,36 @@ from django.contrib.auth import logout
 #Para enviar mensajes del servidor al cliente
 from django.contrib import messages
 
-
 #Con esto vamos a usar el modelo User para crear usuarios
 from django.contrib.auth.models import User
-
-
-
 from .forms import RegisterForm
+
+#importamos el products
+from products.models import Product
+
 
 #def index(request):
 #    return HttpResponse('Hola Mundo!')
 
 def index(request):
+    
+    
+    products = Product.objects.all().order_by('-id')
+    
+    
     context = {
         'nombre': 'StoreJairo',
         'title' : 'Listado de Productos',
         'mensaje': 'Nuevo mensaje desde la vista',
-        'products': [
-           {'title':'Playera','price':5,'stock':True},
-           {'title':'Camisa','price':7,'stock':True}, 
-           {'title':'Mochila','price':20,'stock':False}, 
-        ]
+        'products': products
+        #[
+        #   {'title':'Playera','price':5,'stock':True},
+        #   {'title':'Camisa','price':7,'stock':True}, 
+        #   {'title':'Mochila','price':20,'stock':False}, 
+        #]
     }
+    
+    
     #la funcion render recibe 3 argumentos
     return render(request ,'index.html',context)
 
@@ -61,12 +69,18 @@ def examplerender(request):
     #la funcion render recibe 3 argumentos
     return render(request ,'index.html',context)
 
+
 def login_views(request):#Tiene que recibir la peticion
     #va responder con un template
+    
+    #Vamos a solucionar el de ingreso a url desde la barra de navegacion
+    if request.user.is_authenticated:
+        return redirect('index')
     
     print(request.method)
     
     if request.method == 'POST':
+                  #Datos enviados en el formulario
         username = request.POST.get('username')
         password = request.POST.get('password')
         
@@ -76,6 +90,7 @@ def login_views(request):#Tiene que recibir la peticion
         
         if user:
             #vamos a necesitar la peticion y el usuario al cual se le va generar la sesion
+            #Con esto vamos a crear la sesion 
             login(request , user)
             
             #Enviando mensajes del servidor al cliente
@@ -97,6 +112,8 @@ def login_views(request):#Tiene que recibir la peticion
         
     })
 
+
+
 # ()   {}  <!--  -->
 def logout_view(request):
     logout(request)
@@ -105,6 +122,11 @@ def logout_view(request):
 
 
 def register(request):
+    
+    #Vamos a solucionar el de ingreso a url desde la barra de navegacion
+    if request.user.is_authenticated:
+        return redirect('index')
+    
     #vamos a crear una instancia de forms
     #Cuando le pasamos un diccionario estos valores son 
     #los que se pintan en el formulario
@@ -117,9 +139,7 @@ def register(request):
     #que si la peticion es por método post entonces se genera un 
     #Formulario con los datos que el cliente envia
     #Sino los genera con el campo vacio
-    form=RegisterForm(
-        request.POST or None
-    )
+    form=RegisterForm(request.POST or None)
     
     
     #is_validad nos permite conocer si el formulario es valido o no
@@ -140,15 +160,11 @@ def register(request):
         
         if user:
             #Pero debemos de crear la session
+            #Se utiliza para iniciar sesion al usuario recientemente registrado
             login(request,user)
             messages.success(request , 'Usuario creado exitosamente') 
             return redirect('index')
-        
-        
-        print(username)
-        print(email)
-        print(password)
-        
+          
     
     #Este es el formulario que se muestra ni bien ingreso a la URL
     #Ya dentro del formulario se va aplicar los metodo arriba codificados

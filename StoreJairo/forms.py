@@ -38,6 +38,7 @@ class RegisterForm(forms.Form):
     
     
     #vamos a validar ahora los campos
+    #Self se refiere a la instancia actual de la clase.
     def clean_username(self):
         username = self.cleaned_data.get('username')
         if User.objects.filter(username=username).exists():
