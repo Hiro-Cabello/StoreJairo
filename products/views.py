@@ -1,9 +1,7 @@
 from django.shortcuts import render
-
 # Create your views here.
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-
 from .models import Product
 
 class ProductListView(ListView):
@@ -33,3 +31,30 @@ class ProductDetailView(DetailView): #id-->pk
     #    context = super().get_context_data(**kwargs) #con esto obtenemos el contexto de la clase padre 
     #    print(context)
     #    return context #con esto le estoy pasando los datos al template
+
+class ProductSearchListView(ListView):
+   
+    template_name = 'products/search.html'  
+    # Plantilla que se usará para renderizar la lista de objetos
+    # renderizar implica tomar datos y combinarlos con una plantilla
+    # para producir un resultadoque se enviará la navegador web del usuario.
+    
+    #Las clases que hereden de detailview
+    #Aqui vamos a depender de lo que el formulario nos envíe como input
+    def get_queryset(self):
+        #Select * from productos where title like %valor%
+        return Product.objects.filter(title__icontains = self.query())
+
+    def query(self):
+        return self.request.GET.get('q')
+     
+    #vamos a sobreescribir el método
+    #Con este método vamos a pasar el contexto de la clase al template
+    def get_context_data(self , **kwargs):
+        context = super().get_context_data(**kwargs) #con esto obtenemos el contexto de la clase padre
+        context['query']= self.query()
+        context['products']= self.get_queryset()
+        context['count']=context['products'].count()
+        print(context)
+        return context
+    

@@ -1,0 +1,20 @@
+<!-- Este template que se muestra cuando se realiza la busqueda -->
+{% extends 'base.html' %}
+
+    {% block content %}
+        <div class="col">
+            {% include 'products/snippets/search.html' with query=query %}
+            <hr>
+            <p> Resultado para : {{query}} ({{count}}) </p>
+
+            <div class="row">
+                {% for product in products %}
+                    <div class="col-4 mt-4">
+                        {% include 'products/snippets/product.html' with product=product %} 
+                    </div>
+                {% endfor %}
+            </div>
+
+
+        </div>
+    {% endblock %}

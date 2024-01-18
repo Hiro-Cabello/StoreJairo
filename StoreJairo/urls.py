@@ -20,11 +20,13 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 
-
 from django.urls import include
 
-
 from products.views import ProductListView
+
+from django.conf.urls.static import static
+from django.conf import settings
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -42,8 +44,10 @@ urlpatterns = [
     
     path('productos/',include('products.urls'))
 ]
-#recordar que con el include ya podria usar cada url de las aplicaciones sin ningun problema64
-
+#recordar que con el include ya podria usar cada url de las aplicaciones sin ningun problema
+#Con esto significa que vamos a agregar dichas rutas si estamos en debug
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 
 
 

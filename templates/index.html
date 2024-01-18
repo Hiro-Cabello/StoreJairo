@@ -7,46 +7,12 @@
 
 
 {% block content %}
-            <div class="col mt-2">
-                <h1 class=""> {{ title }} </h1>
-                <!--
-                <table class="table mt-3">
-                    <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Stock</th>
-                    </tr>
-                    </thead>
-                    {% for product in products %}
-                    
-                            <tbody>
-                            <tr>
-                                <th scope="row">{{ forloop.counter }}</th>
-                                <td>{{ product.title }}</td>
-                                <td>{{ product.price }}</td>
-                                <td> {{ product.stock }} </td>
-                            </tr>
-                            </tbody>
-                    
-                    {% endfor %}
-                </table>
-            -->
-                <ul class="list-group">
-                    {% for product in products %}
-                        <li class="list-group-item">
-                            {{ product.title }}
-            
+    <div class="col">
+        <h4 class="text-center mt-2"> {{ title }} </h1>
+        {% include 'products/snippets/search.html' %}
+        
+        {% include 'products/snippets/list.html' %}
 
-                            <span class="text-success"> ${{ product.price }} </span>  
-
-                        </li>
-                    {% endfor %}
-                </ul>
-                
-
-
-            </div> 
+    </div> 
 {% endblock %}   
 
