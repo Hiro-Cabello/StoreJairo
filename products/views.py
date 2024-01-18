@@ -4,6 +4,10 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from .models import Product
 
+
+#Para poder realizar una consulta aplicando diversos filtros se tiene que importar lo siguiente
+from django.db.models import Q
+
 class ProductListView(ListView):
     template_name = 'index.html'
     queryset  = Product.objects.all().order_by('-id')
@@ -32,6 +36,9 @@ class ProductDetailView(DetailView): #id-->pk
     #    print(context)
     #    return context #con esto le estoy pasando los datos al template
 
+
+
+
 class ProductSearchListView(ListView):
    
     template_name = 'products/search.html'  
@@ -42,8 +49,11 @@ class ProductSearchListView(ListView):
     #Las clases que hereden de detailview
     #Aqui vamos a depender de lo que el formulario nos envíe como input
     def get_queryset(self):
+        #Aquí se puede identificar el filtro doble
+        filters = Q(title__icontains = self.query()) | Q(category__title__icontains = self.query())
         #Select * from productos where title like %valor%
-        return Product.objects.filter(title__icontains = self.query())
+        #return Product.objects.filter(title__icontains = self.query())
+        return Product.objects.filter(filters)
 
     def query(self):
         return self.request.GET.get('q')
@@ -57,4 +67,3 @@ class ProductSearchListView(ListView):
         context['count']=context['products'].count()
         print(context)
         return context
-    
